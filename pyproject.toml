@@ -1,0 +1,262 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "oncology-datapipeline"
+version = "0.1.0"
+description = "Data Quality Automation Framework for Oncology Data Pipeline"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Data Quality Engineer", email = "dq-engineer@example.com" }
+]
+keywords = [
+    "data-quality",
+    "oncology",
+    "healthcare",
+    "great-expectations",
+    "databricks",
+    "etl",
+    "data-validation"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+    "Topic :: Database",
+    "Typing :: Typed",
+]
+
+dependencies = [
+    # Core Data Processing
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "pyarrow>=14.0.0",
+
+    # Great Expectations - Data Quality
+    "great-expectations>=0.18.0",
+
+    # Database Connectors
+    "pyodbc>=5.0.0",
+    "sqlalchemy>=2.0.0",
+    "databricks-sql-connector>=3.0.0",
+
+    # PySpark (for Databricks compatibility)
+    "pyspark>=3.4.0",
+
+    # Data Profiling & Analysis
+    "ydata-profiling>=4.6.0",
+    "scipy>=1.11.0",
+    "scikit-learn>=1.3.0",
+
+    # Synthetic Data Generation
+    "faker>=22.0.0",
+
+    # Configuration & Environment
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+
+    # Logging & Observability
+    "structlog>=24.1.0",
+
+    # CLI & Dashboard
+    "typer>=0.9.0",
+    "rich>=13.7.0",
+    "streamlit>=1.30.0",
+
+    # HTTP & API
+    "httpx>=0.26.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "pytest-asyncio>=0.23.0",
+    "pytest-mock>=3.12.0",
+    "pytest-xdist>=3.5.0",
+    "hypothesis>=6.92.0",
+
+    # Linting & Formatting
+    "black>=24.1.0",
+    "isort>=5.13.0",
+    "flake8>=7.0.0",
+    "flake8-docstrings>=1.7.0",
+    "flake8-bugbear>=24.1.0",
+
+    # Type Checking
+    "mypy>=1.8.0",
+    "pandas-stubs>=2.0.0",
+    "types-pytz>=2024.1.0",
+
+    # Pre-commit
+    "pre-commit>=3.6.0",
+]
+
+docs = [
+    "mkdocs>=1.5.0",
+    "mkdocs-material>=9.5.0",
+    "mkdocstrings[python]>=0.24.0",
+]
+
+all = [
+    "oncology-datapipeline[dev,docs]",
+]
+
+[project.scripts]
+oncology-dq = "src.cli:app"
+
+[project.urls]
+Homepage = "https://github.com/example/oncology-datapipeline"
+Documentation = "https://github.com/example/oncology-datapipeline#readme"
+Repository = "https://github.com/example/oncology-datapipeline"
+Issues = "https://github.com/example/oncology-datapipeline/issues"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src"]
+
+[tool.hatch.build.targets.sdist]
+include = [
+    "/src",
+    "/tests",
+    "/great_expectations",
+]
+
+# Black Configuration
+[tool.black]
+line-length = 100
+target-version = ["py310", "py311", "py312"]
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | great_expectations/uncommitted
+)/
+'''
+
+# isort Configuration
+[tool.isort]
+profile = "black"
+line_length = 100
+known_first_party = ["src"]
+known_third_party = [
+    "great_expectations",
+    "pandas",
+    "numpy",
+    "pyspark",
+    "pydantic",
+    "pytest",
+    "structlog",
+]
+sections = [
+    "FUTURE",
+    "STDLIB",
+    "THIRDPARTY",
+    "FIRSTPARTY",
+    "LOCALFOLDER",
+]
+skip_glob = ["**/great_expectations/uncommitted/*"]
+
+# MyPy Configuration
+[tool.mypy]
+python_version = "3.10"
+warn_return_any = true
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_equality = true
+strict_concatenate = true
+check_untyped_defs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+plugins = ["pydantic.mypy"]
+
+[[tool.mypy.overrides]]
+module = [
+    "great_expectations.*",
+    "databricks.*",
+    "pyodbc.*",
+    "ydata_profiling.*",
+    "faker.*",
+]
+ignore_missing_imports = true
+
+# Pytest Configuration
+[tool.pytest.ini_options]
+minversion = "7.0"
+addopts = [
+    "-ra",
+    "-q",
+    "--strict-markers",
+    "--strict-config",
+    "-p no:warnings",
+]
+testpaths = ["tests"]
+pythonpath = ["."]
+markers = [
+    "unit: Unit tests (fast, no external dependencies)",
+    "integration: Integration tests (may require external services)",
+    "e2e: End-to-end tests (full pipeline execution)",
+    "slow: Tests that take more than 1 second",
+    "databricks: Tests requiring Databricks connection",
+    "sqlserver: Tests requiring SQL Server connection",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+
+# Coverage Configuration
+[tool.coverage.run]
+source = ["src"]
+branch = true
+omit = [
+    "*/tests/*",
+    "*/__pycache__/*",
+    "*/great_expectations/uncommitted/*",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    "@abstractmethod",
+    "@overload",
+]
+fail_under = 80
+show_missing = true
+skip_covered = false
+
+[tool.coverage.html]
+directory = "htmlcov"
+
+# Pydantic MyPy Plugin
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true

@@ -1,0 +1,177 @@
+{
+  "expectation_suite_name": "oncology_treatments_suite",
+  "ge_cloud_id": null,
+  "meta": {
+    "great_expectations_version": "0.18.0",
+    "citations": [
+      {
+        "citation_date": "2024-01-01",
+        "comment": "Oncology Treatment Data Quality Expectations"
+      }
+    ],
+    "notes": {
+      "format": "markdown",
+      "content": [
+        "# Treatment Data Quality Expectations",
+        "",
+        "This suite validates oncology treatment records including:",
+        "- Chemotherapy regimens",
+        "- Radiation therapy",
+        "- Surgical procedures",
+        "- Immunotherapy and targeted therapy"
+      ]
+    }
+  },
+  "expectations": [
+    {
+      "expectation_type": "expect_table_columns_to_match_set",
+      "kwargs": {
+        "column_set": [
+          "treatment_id", "patient_id", "treatment_type", "treatment_name",
+          "drug_code", "drug_name", "dosage", "dosage_unit", "route",
+          "start_date", "end_date", "status", "cycles_planned", "cycles_completed",
+          "treating_physician", "facility_name", "notes", "created_at", "updated_at"
+        ],
+        "exact_match": false
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_unique",
+      "kwargs": {
+        "column": "treatment_id"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "treatment_id"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "patient_id"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "treatment_type",
+        "value_set": [
+          "chemotherapy", "radiation", "surgery",
+          "immunotherapy", "targeted_therapy", "hormone_therapy"
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "treatment_name"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "drug_code",
+        "regex": "^\\d{5}-\\d{4}-\\d{2}$",
+        "mostly": 0.8
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "NDC code format: XXXXX-XXXX-XX (only for drug-based treatments)"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "dosage",
+        "min_value": 0,
+        "mostly": 0.95
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "Dosage must be non-negative"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "route",
+        "value_set": ["IV", "PO", "IM", "SC", "IT", "Topical", null],
+        "mostly": 0.95
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "Common administration routes"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "start_date"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "status",
+        "value_set": ["planned", "in_progress", "completed", "cancelled", "on_hold"]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "cycles_planned",
+        "min_value": 1,
+        "max_value": 50,
+        "mostly": 0.9
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "cycles_completed",
+        "min_value": 0,
+        "max_value": 50,
+        "mostly": 0.9
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "treating_physician"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "facility_name"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_table_row_count_to_be_between",
+      "kwargs": {
+        "min_value": 1
+      },
+      "meta": {}
+    }
+  ]
+}

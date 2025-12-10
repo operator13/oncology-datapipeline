@@ -1,0 +1,269 @@
+{
+  "expectation_suite_name": "oncology_patients_suite",
+  "ge_cloud_id": null,
+  "meta": {
+    "great_expectations_version": "0.18.0",
+    "citations": [
+      {
+        "citation_date": "2024-01-01",
+        "comment": "Oncology Patient Data Quality Expectations"
+      }
+    ],
+    "notes": {
+      "format": "markdown",
+      "content": [
+        "# Patient Data Quality Expectations",
+        "",
+        "This suite validates oncology patient demographic and diagnosis data.",
+        "",
+        "## Domains Covered",
+        "- Patient identifiers (MRN, patient_id)",
+        "- Demographics (name, DOB, gender, race, ethnicity)",
+        "- Contact information (address, phone, email)",
+        "- Diagnosis information (ICD-10 codes, cancer type, staging)"
+      ]
+    }
+  },
+  "expectations": [
+    {
+      "expectation_type": "expect_table_columns_to_match_set",
+      "kwargs": {
+        "column_set": [
+          "patient_id", "mrn", "first_name", "last_name", "date_of_birth",
+          "gender", "race", "ethnicity", "address_line1", "city", "state",
+          "zip_code", "phone", "email", "primary_diagnosis_code",
+          "primary_diagnosis_date", "cancer_type", "cancer_stage",
+          "created_at", "updated_at"
+        ],
+        "exact_match": false
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "Validates that required patient columns are present"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_unique",
+      "kwargs": {
+        "column": "patient_id"
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "Patient ID must be unique across all records"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "patient_id"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_unique",
+      "kwargs": {
+        "column": "mrn"
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "Medical Record Number must be unique"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "mrn"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "mrn",
+        "regex": "^MRN\\d{8}$"
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "MRN format: MRN followed by 8 digits"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "first_name"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "last_name"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "date_of_birth"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_dateutil_parseable",
+      "kwargs": {
+        "column": "date_of_birth"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "gender",
+        "value_set": ["M", "F", "O", "U"]
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "Valid gender codes: M=Male, F=Female, O=Other, U=Unknown"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "race",
+        "value_set": ["W", "B", "A", "N", "P", "O", "U"]
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "HL7 race codes"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "ethnicity",
+        "value_set": ["H", "N", "U"]
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "H=Hispanic, N=Non-Hispanic, U=Unknown"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "state",
+        "regex": "^[A-Z]{2}$"
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "State must be 2-letter abbreviation"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "zip_code",
+        "regex": "^\\d{5}(-\\d{4})?$"
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "ZIP code: 5 digits or ZIP+4 format"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "primary_diagnosis_code",
+        "regex": "^[A-Z]\\d{2}(\\.\\d{1,4})?$"
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "ICD-10 code format validation"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "primary_diagnosis_code",
+        "regex": "^C\\d{2}.*$|^D0[0-4].*$"
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "ICD-10 oncology codes start with C (malignant) or D00-D04 (in-situ)"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "cancer_type",
+        "value_set": [
+          "breast", "lung", "colorectal", "prostate", "melanoma",
+          "lymphoma", "leukemia", "pancreatic", "ovarian", "bladder"
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "cancer_stage",
+        "regex": "^(I|II|III|IV)(A|B|C)?$"
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "Cancer staging: I, II, III, IV with optional A/B/C substage"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_pair_values_A_to_be_greater_than_B",
+      "kwargs": {
+        "column_A": "primary_diagnosis_date",
+        "column_B": "date_of_birth",
+        "or_equal": false,
+        "parse_strings_as_datetimes": true
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "Diagnosis date must be after birth date"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_table_row_count_to_be_between",
+      "kwargs": {
+        "min_value": 1
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "Table must have at least one record"
+        }
+      }
+    }
+  ]
+}

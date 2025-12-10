@@ -1,0 +1,209 @@
+{
+  "expectation_suite_name": "oncology_lab_results_suite",
+  "ge_cloud_id": null,
+  "meta": {
+    "great_expectations_version": "0.18.0",
+    "citations": [
+      {
+        "citation_date": "2024-01-01",
+        "comment": "Oncology Lab Results Data Quality Expectations"
+      }
+    ],
+    "notes": {
+      "format": "markdown",
+      "content": [
+        "# Lab Results Data Quality Expectations",
+        "",
+        "This suite validates oncology laboratory test results including:",
+        "- Hematology panels (CBC)",
+        "- Chemistry panels (BMP, CMP)",
+        "- Tumor markers (CEA, CA-125, PSA, etc.)",
+        "- Coagulation studies"
+      ]
+    }
+  },
+  "expectations": [
+    {
+      "expectation_type": "expect_table_columns_to_match_set",
+      "kwargs": {
+        "column_set": [
+          "result_id", "patient_id", "test_code", "test_name", "test_category",
+          "result_value", "result_unit", "result_text", "reference_range_low",
+          "reference_range_high", "is_abnormal", "is_critical", "specimen_type",
+          "collection_datetime", "result_datetime", "performing_lab",
+          "ordering_physician", "created_at"
+        ],
+        "exact_match": false
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_unique",
+      "kwargs": {
+        "column": "result_id"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "result_id"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "patient_id"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "test_code"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_match_regex",
+      "kwargs": {
+        "column": "test_code",
+        "regex": "^\\d{4,5}(-\\d)?$"
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "LOINC code format validation"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "test_name"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "test_category",
+        "value_set": ["hematology", "chemistry", "tumor_marker", "coagulation", "urinalysis"]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_between",
+      "kwargs": {
+        "column": "result_value",
+        "min_value": 0,
+        "mostly": 0.98
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "Result values should be non-negative (most lab tests)"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_type_list",
+      "kwargs": {
+        "column": "is_abnormal",
+        "type_list": ["BOOLEAN", "bool", "int64", "int", "INTEGER"]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_type_list",
+      "kwargs": {
+        "column": "is_critical",
+        "type_list": ["BOOLEAN", "bool", "int64", "int", "INTEGER"]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "specimen_type"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_be_in_set",
+      "kwargs": {
+        "column": "specimen_type",
+        "value_set": [
+          "Whole Blood", "EDTA Blood", "Serum", "Plasma",
+          "Citrated Plasma", "Urine", "24-Hour Urine"
+        ]
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "collection_datetime"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "result_datetime"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_pair_values_A_to_be_greater_than_B",
+      "kwargs": {
+        "column_A": "result_datetime",
+        "column_B": "collection_datetime",
+        "or_equal": true,
+        "parse_strings_as_datetimes": true
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "Result timestamp must be after or equal to collection timestamp"
+        }
+      }
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "performing_lab"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_values_to_not_be_null",
+      "kwargs": {
+        "column": "ordering_physician"
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_table_row_count_to_be_between",
+      "kwargs": {
+        "min_value": 1
+      },
+      "meta": {}
+    },
+    {
+      "expectation_type": "expect_column_proportion_of_unique_values_to_be_between",
+      "kwargs": {
+        "column": "test_code",
+        "min_value": 0.001,
+        "max_value": 1.0
+      },
+      "meta": {
+        "notes": {
+          "format": "markdown",
+          "content": "Should have some variety in test codes"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,152 @@
+name: Data Quality Checks
+
+on:
+  schedule:
+    # Run daily at 6 AM UTC
+    - cron: "0 6 * * *"
+  workflow_dispatch:
+    inputs:
+      dataset:
+        description: "Dataset to validate (all, patients, treatments, lab_results)"
+        required: false
+        default: "all"
+
+env:
+  PYTHON_VERSION: "3.11"
+
+jobs:
+  generate-test-data:
+    name: Generate Test Data
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Generate synthetic data
+        run: |
+          python -c "
+          from src.synthetic_data import OncologyDataFactory
+          factory = OncologyDataFactory(num_patients=500, seed=42)
+          dataset = factory.generate()
+          factory.export_to_csv(dataset, 'test_data/')
+          print('Generated test data successfully')
+          "
+
+      - name: Upload test data
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-data
+          path: test_data/
+
+  validate-data:
+    name: Run Validations
+    runs-on: ubuntu-latest
+    needs: generate-test-data
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Download test data
+        uses: actions/download-artifact@v4
+        with:
+          name: test-data
+          path: test_data/
+
+      - name: Run data quality validations
+        run: |
+          python -c "
+          import pandas as pd
+          from src.pipelines import QualityPipeline
+
+          # Load test data
+          patients = pd.read_csv('test_data/patients.csv')
+          treatments = pd.read_csv('test_data/treatments.csv')
+          lab_results = pd.read_csv('test_data/lab_results.csv')
+
+          # Run quality pipeline
+          pipeline = QualityPipeline()
+          result = pipeline.run(
+              patients_df=patients,
+              treatments_df=treatments,
+              lab_results_df=lab_results,
+          )
+
+          print(result.summary())
+
+          # Fail if quality score is too low
+          if result.quality_score < 70:
+              print(f'Quality score {result.quality_score:.1f}% is below threshold of 70%')
+              exit(1)
+          "
+
+      - name: Generate quality report
+        run: |
+          python -c "
+          import pandas as pd
+          import json
+          from src.profiling import DataProfiler
+          from src.metrics import QualityScorecardCalculator
+
+          # Load and profile data
+          patients = pd.read_csv('test_data/patients.csv')
+          profiler = DataProfiler()
+          profile = profiler.profile(patients, 'patients')
+
+          # Calculate scorecard
+          calculator = QualityScorecardCalculator()
+          scorecard = calculator.calculate(patients, 'patients')
+
+          # Save report
+          report = {
+              'profile': profile.summary(),
+              'scorecard': scorecard.to_dict(),
+          }
+          with open('quality_report.json', 'w') as f:
+              json.dump(report, f, indent=2, default=str)
+
+          print(scorecard.summary())
+          "
+
+      - name: Upload quality report
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-report
+          path: quality_report.json
+
+  notify:
+    name: Notify Results
+    runs-on: ubuntu-latest
+    needs: validate-data
+    if: always()
+
+    steps:
+      - name: Check validation status
+        run: |
+          if [ "${{ needs.validate-data.result }}" == "failure" ]; then
+            echo "Data quality checks failed!"
+            # Add notification logic here (Slack, email, etc.)
+            exit 0
+          fi
+          echo "Data quality checks passed!"
