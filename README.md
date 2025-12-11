@@ -356,15 +356,16 @@ oncology_datapipeline/
 
 ```bash
 # Clone the repository
-git clone https://github.com/example/oncology-datapipeline.git
+git clone https://github.com/operator13/oncology-datapipeline.git
 cd oncology-datapipeline
 
 # Create virtual environment
 python -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Install dependencies
-make dev  # or: pip install -e ".[dev]"
+# Install dependencies (choose one)
+pip install -r requirements.txt    # Option 1: Using requirements.txt
+pip install -e ".[dev]"            # Option 2: Using pyproject.toml
 ```
 
 ### Configuration
