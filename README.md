@@ -545,6 +545,66 @@ make test-e2e
 make test-fast
 ```
 
+### Test Suite Overview (41 Tests)
+
+The project includes comprehensive unit tests covering data quality, profiling, and synthetic data generation.
+
+#### Data Quality Tests (`test_data_quality.py` - 12 tests)
+
+| Test | What It Validates |
+|------|-------------------|
+| `test_expect_not_null` | Null value detection in required fields |
+| `test_expect_unique` | Uniqueness constraints (e.g., patient IDs) |
+| `test_expect_between` | Numeric range validation (e.g., age 0-120) |
+| `test_expect_regex` | Pattern matching (e.g., ICD-10 codes) |
+| `test_expect_values_in_set` | Categorical value validation |
+| `test_icd10_oncology_code` | ICD-10 oncology code format (C00-D49) |
+| `test_ndc_code` | NDC drug identifier format |
+| `test_chaining` | Fluent API for building expectations |
+| `test_build_empty_suite` | Empty suite initialization |
+| `test_patient_suite_structure` | JSON expectation suite structure |
+| `test_success_percent` | Validation pass rate calculation |
+| `test_failed_expectations_filter` | Failed expectation filtering |
+
+#### Data Profiling Tests (`test_profiling.py` - 14 tests)
+
+| Test | What It Validates |
+|------|-------------------|
+| `test_profile_basic` | Basic profiling (row count, columns) |
+| `test_profile_numeric_stats` | Statistical measures (mean, std, quartiles) |
+| `test_profile_with_nulls` | Null value handling in profiles |
+| `test_profile_to_dataframe` | Profile export to DataFrame |
+| `test_detect_iqr` | IQR-based anomaly detection |
+| `test_detect_zscore` | Z-score anomaly detection |
+| `test_detect_mad` | Median Absolute Deviation detection |
+| `test_no_anomalies_in_normal_data` | False positive prevention |
+| `test_anomaly_result_summary` | Anomaly result aggregation |
+| `test_detect_schema_drift_no_change` | Schema stability verification |
+| `test_detect_schema_drift_added_column` | New column detection |
+| `test_detect_schema_drift_removed_column` | Missing column detection |
+| `test_detect_distribution_drift` | Statistical distribution changes |
+| `test_detect_no_distribution_drift` | Distribution stability |
+
+#### Synthetic Data Tests (`test_synthetic_data.py` - 15 tests)
+
+| Test | What It Validates |
+|------|-------------------|
+| `test_generate_single_patient` | Patient record generation |
+| `test_generate_multiple_patients` | Batch patient generation |
+| `test_generate_treatments_for_patients` | Treatment record linking |
+| `test_generate_lab_results` | Lab result generation |
+| `test_generate_with_specific_cancer_types` | Cancer type filtering |
+| `test_reproducibility_with_seed` | Deterministic generation with seeds |
+| `test_valid_icd10_codes` | Generated ICD-10 code validity |
+| `test_valid_treatment_types` | Treatment type enumeration |
+| `test_valid_cancer_stages` | Cancer staging (I-IV) validity |
+| `test_valid_test_categories` | Lab test category validity |
+| `test_chemotherapy_has_drug_info` | Drug info for chemo treatments |
+| `test_treatment_patient_reference` | Referential integrity |
+| `test_diagnosis_date_after_birth` | Date logic validation |
+| `test_result_datetime_after_collection` | Temporal ordering |
+| `test_abnormal_flag_consistency` | Flag/value consistency |
+
 ---
 
 ## Code Quality
