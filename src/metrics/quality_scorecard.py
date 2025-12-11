@@ -186,12 +186,8 @@ class QualityScorecardCalculator:
         scores: dict[QualityDimension, DimensionScore] = {}
 
         # Calculate each dimension
-        scores[QualityDimension.COMPLETENESS] = self._calculate_completeness(
-            df, required_columns
-        )
-        scores[QualityDimension.UNIQUENESS] = self._calculate_uniqueness(
-            df, unique_columns
-        )
+        scores[QualityDimension.COMPLETENESS] = self._calculate_completeness(df, required_columns)
+        scores[QualityDimension.UNIQUENESS] = self._calculate_uniqueness(df, unique_columns)
         scores[QualityDimension.VALIDITY] = self._calculate_validity(df)
         scores[QualityDimension.CONSISTENCY] = self._calculate_consistency(df)
         scores[QualityDimension.TIMELINESS] = self._calculate_timeliness(df, date_columns)
@@ -268,8 +264,7 @@ class QualityScorecardCalculator:
         if not unique_columns:
             # Check for common unique column names
             unique_columns = [
-                c for c in df.columns
-                if any(x in c.lower() for x in ["id", "mrn", "code"])
+                c for c in df.columns if any(x in c.lower() for x in ["id", "mrn", "code"])
             ]
 
         if not unique_columns:
@@ -310,7 +305,13 @@ class QualityScorecardCalculator:
             else:
                 # Numeric - check for finite values
                 if pd.api.types.is_numeric_dtype(df[col]):
-                    finite_rate = df[col].apply(lambda x: pd.notna(x) and not (pd.notna(x) and abs(x) == float('inf'))).mean()
+                    finite_rate = (
+                        df[col]
+                        .apply(
+                            lambda x: pd.notna(x) and not (pd.notna(x) and abs(x) == float("inf"))
+                        )
+                        .mean()
+                    )
                     valid_rates.append(finite_rate)
                 else:
                     valid_rates.append(1.0)
@@ -356,7 +357,8 @@ class QualityScorecardCalculator:
         if not date_columns:
             # Auto-detect date columns
             date_columns = [
-                c for c in df.columns
+                c
+                for c in df.columns
                 if any(x in c.lower() for x in ["date", "time", "created", "updated"])
             ]
 

@@ -284,20 +284,20 @@ Dimension Scores:
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                     PRESENTATION LAYER                       │
-│              CLI  │  Dashboard  │  Reports                   │
+│                     PRESENTATION LAYER                      │
+│              CLI  │  Dashboard  │  Reports                  │
 ├─────────────────────────────────────────────────────────────┤
-│                    ORCHESTRATION LAYER                       │
-│         Pipelines  │  Workflows  │  Schedulers               │
+│                    ORCHESTRATION LAYER                      │
+│         Pipelines  │  Workflows  │  Schedulers              │
 ├─────────────────────────────────────────────────────────────┤
-│                       SERVICE LAYER                          │
-│   Validation  │  Profiling  │  Anomaly Detection  │ Metrics  │
+│                       SERVICE LAYER                         │
+│   Validation  │  Profiling  │  Anomaly Detection  │ Metrics │
 ├─────────────────────────────────────────────────────────────┤
-│                     DATA ACCESS LAYER                        │
-│      Databricks Connector  │  SQL Server Connector           │
+│                     DATA ACCESS LAYER                       │
+│      Databricks Connector  │  SQL Server Connector          │
 ├─────────────────────────────────────────────────────────────┤
-│                       DOMAIN LAYER                           │
-│         Patient  │  Treatment  │  Lab Results                │
+│                       DOMAIN LAYER                          │
+│         Patient  │  Treatment  │  Lab Results               │
 └─────────────────────────────────────────────────────────────┘
 ```
 

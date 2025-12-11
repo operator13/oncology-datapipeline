@@ -372,11 +372,13 @@ class ValidationRunner:
             try:
                 # Run validation using pandas directly
                 success = self._run_expectation(df, exp_type, kwargs)
-                results.append({
-                    "expectation_type": exp_type,
-                    "success": success,
-                    "kwargs": kwargs,
-                })
+                results.append(
+                    {
+                        "expectation_type": exp_type,
+                        "success": success,
+                        "kwargs": kwargs,
+                    }
+                )
                 if success:
                     success_count += 1
             except Exception as e:
@@ -385,11 +387,13 @@ class ValidationRunner:
                     expectation=exp_type,
                     error=str(e),
                 )
-                results.append({
-                    "expectation_type": exp_type,
-                    "success": False,
-                    "error": str(e),
-                })
+                results.append(
+                    {
+                        "expectation_type": exp_type,
+                        "success": False,
+                        "error": str(e),
+                    }
+                )
 
         return {
             "success": success_count == len(expectations) if expectations else True,
@@ -515,14 +519,18 @@ class ValidationRunner:
             suite_name=suite_name,
             run_time=datetime.now(),
             statistics=results.statistics if hasattr(results, "statistics") else {},
-            results=[
-                {
-                    "expectation_type": r.expectation_config.expectation_type,
-                    "success": r.success,
-                    "kwargs": r.expectation_config.kwargs,
-                }
-                for r in results.results
-            ] if hasattr(results, "results") else [],
+            results=(
+                [
+                    {
+                        "expectation_type": r.expectation_config.expectation_type,
+                        "success": r.success,
+                        "kwargs": r.expectation_config.kwargs,
+                    }
+                    for r in results.results
+                ]
+                if hasattr(results, "results")
+                else []
+            ),
             data_docs_url=data_docs_url,
         )
 
@@ -533,7 +541,9 @@ class ValidationRunner:
             URL string or None.
         """
         try:
-            docs_path = self.config.ge_root_dir / "uncommitted" / "data_docs" / "local_site" / "index.html"
+            docs_path = (
+                self.config.ge_root_dir / "uncommitted" / "data_docs" / "local_site" / "index.html"
+            )
             if docs_path.exists():
                 return f"file://{docs_path.absolute()}"
         except Exception:

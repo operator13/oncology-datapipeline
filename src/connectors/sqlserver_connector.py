@@ -11,10 +11,7 @@ import pandas as pd
 import structlog
 
 from src.connectors.base import BatchConnector, TransactionalConnector
-from src.domain.exceptions import (
-    ConnectionFailedError,
-    QueryExecutionError,
-)
+from src.domain.exceptions import ConnectionFailedError, QueryExecutionError
 from src.utils.config import SqlServerSettings, get_sqlserver_settings
 
 logger = structlog.get_logger(__name__)
@@ -159,7 +156,9 @@ class SqlServerConnector(TransactionalConnector, BatchConnector):
                 self._cursor.execute(query)
 
             # Get column names
-            columns = [desc[0] for desc in self._cursor.description] if self._cursor.description else []
+            columns = (
+                [desc[0] for desc in self._cursor.description] if self._cursor.description else []
+            )
 
             # Fetch all results
             rows = self._cursor.fetchall()
@@ -205,7 +204,9 @@ class SqlServerConnector(TransactionalConnector, BatchConnector):
             else:
                 self._cursor.execute(query)
 
-            columns = [desc[0] for desc in self._cursor.description] if self._cursor.description else []
+            columns = (
+                [desc[0] for desc in self._cursor.description] if self._cursor.description else []
+            )
 
             while True:
                 rows = self._cursor.fetchmany(chunk_size)
@@ -274,9 +275,7 @@ class SqlServerConnector(TransactionalConnector, BatchConnector):
         result = self._cursor.fetchone()
         return result[0] > 0 if result else False
 
-    def get_table_schema(
-        self, table_name: str, schema: str | None = None
-    ) -> list[dict[str, Any]]:
+    def get_table_schema(self, table_name: str, schema: str | None = None) -> list[dict[str, Any]]:
         """Get table schema information.
 
         Args:
@@ -466,9 +465,7 @@ class SqlServerConnector(TransactionalConnector, BatchConnector):
         """
         return self.execute_query(query)
 
-    def get_index_fragmentation(
-        self, table_name: str, schema: str | None = None
-    ) -> pd.DataFrame:
+    def get_index_fragmentation(self, table_name: str, schema: str | None = None) -> pd.DataFrame:
         """Get index fragmentation for a table.
 
         Args:

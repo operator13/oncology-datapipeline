@@ -10,7 +10,6 @@ Usage:
     python -m src.cli profile --input data/patients.csv
 """
 
-import json
 from pathlib import Path
 from typing import Optional
 
@@ -30,7 +29,9 @@ console = Console()
 def generate(
     patients: int = typer.Option(1000, "--patients", "-p", help="Number of patients to generate"),
     output: Path = typer.Option(Path("data/synthetic"), "--output", "-o", help="Output directory"),
-    seed: Optional[int] = typer.Option(None, "--seed", "-s", help="Random seed for reproducibility"),
+    seed: Optional[int] = typer.Option(
+        None, "--seed", "-s", help="Random seed for reproducibility"
+    ),
     format: str = typer.Option("csv", "--format", "-f", help="Output format (csv, parquet)"),
 ):
     """Generate synthetic oncology data."""
@@ -42,9 +43,9 @@ def generate(
     dataset = factory.generate()
 
     if format == "parquet":
-        paths = factory.export_to_parquet(dataset, output)
+        factory.export_to_parquet(dataset, output)
     else:
-        paths = factory.export_to_csv(dataset, output)
+        factory.export_to_csv(dataset, output)
 
     console.print(f"[green]Generated data saved to {output}[/green]")
 
@@ -59,8 +60,12 @@ def generate(
 
 @app.command()
 def validate(
-    suite: str = typer.Option("all", "--suite", "-s", help="Suite to run (patients, treatments, lab_results, all)"),
-    input_path: Optional[Path] = typer.Option(None, "--input", "-i", help="Input CSV file to validate"),
+    suite: str = typer.Option(
+        "all", "--suite", "-s", help="Suite to run (patients, treatments, lab_results, all)"
+    ),
+    input_path: Optional[Path] = typer.Option(
+        None, "--input", "-i", help="Input CSV file to validate"
+    ),
 ):
     """Run data quality validations."""
     from src.data_quality import ValidationRunner
@@ -71,6 +76,7 @@ def validate(
 
     if input_path and input_path.exists():
         import pandas as pd
+
         df = pd.read_csv(input_path)
 
         suite_name = f"oncology_{suite}_suite" if suite != "all" else "oncology_patients_suite"
@@ -95,6 +101,7 @@ def profile(
 ):
     """Generate data profile report."""
     import pandas as pd
+
     from src.profiling import DataProfiler
 
     console.print(f"[bold blue]Profiling {input_path}...[/bold blue]")
@@ -112,7 +119,7 @@ def profile(
     console.print(table)
 
     if output:
-        html = profiler.generate_report(profile, output)
+        profiler.generate_report(profile, output)
         console.print(f"[green]Report saved to {output}[/green]")
 
 
@@ -122,6 +129,7 @@ def scorecard(
 ):
     """Calculate data quality scorecard."""
     import pandas as pd
+
     from src.metrics import QualityScorecardCalculator
 
     console.print(f"[bold blue]Calculating scorecard for {input_path}...[/bold blue]")

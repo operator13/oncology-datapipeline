@@ -43,11 +43,11 @@ class PatientGenerator:
 
     # Age distribution weights for oncology patients (skewed toward older ages)
     AGE_WEIGHTS: list[tuple[int, int, float]] = [
-        (18, 30, 0.05),   # 5% - Young adults
-        (31, 45, 0.10),   # 10% - Middle-aged
-        (46, 60, 0.25),   # 25% - Late middle-aged
-        (61, 75, 0.40),   # 40% - Senior
-        (76, 90, 0.20),   # 20% - Elderly
+        (18, 30, 0.05),  # 5% - Young adults
+        (31, 45, 0.10),  # 10% - Middle-aged
+        (46, 60, 0.25),  # 25% - Late middle-aged
+        (61, 75, 0.40),  # 40% - Senior
+        (76, 90, 0.20),  # 20% - Elderly
     ]
 
     # Cancer stage distribution

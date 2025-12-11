@@ -140,7 +140,8 @@ class DriftDetector:
         if columns is None:
             common_cols = set(reference_df.columns) & set(current_df.columns)
             columns = [
-                c for c in common_cols
+                c
+                for c in common_cols
                 if pd.api.types.is_numeric_dtype(reference_df[c])
                 and pd.api.types.is_numeric_dtype(current_df[c])
             ]
@@ -176,10 +177,7 @@ class DriftDetector:
         """
         if columns is None:
             common_cols = set(reference_df.columns) & set(current_df.columns)
-            columns = [
-                c for c in common_cols
-                if pd.api.types.is_numeric_dtype(reference_df[c])
-            ]
+            columns = [c for c in common_cols if pd.api.types.is_numeric_dtype(reference_df[c])]
 
         self._logger.info("Detecting statistical drift", columns=len(columns))
 

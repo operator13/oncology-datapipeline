@@ -2,16 +2,11 @@
 Unit tests for profiling module.
 """
 
-import pytest
-import pandas as pd
 import numpy as np
+import pandas as pd
+import pytest
 
-from src.profiling import (
-    DataProfiler,
-    AnomalyDetector,
-    AnomalyMethod,
-    DriftDetector,
-)
+from src.profiling import AnomalyDetector, AnomalyMethod, DataProfiler, DriftDetector
 
 
 class TestDataProfiler:
@@ -20,11 +15,13 @@ class TestDataProfiler:
     @pytest.mark.unit
     def test_profile_basic(self):
         """Test basic profiling."""
-        df = pd.DataFrame({
-            "id": [1, 2, 3, 4, 5],
-            "name": ["Alice", "Bob", "Charlie", "Diana", "Eve"],
-            "value": [100.0, 200.0, 300.0, 400.0, 500.0],
-        })
+        df = pd.DataFrame(
+            {
+                "id": [1, 2, 3, 4, 5],
+                "name": ["Alice", "Bob", "Charlie", "Diana", "Eve"],
+                "value": [100.0, 200.0, 300.0, 400.0, 500.0],
+            }
+        )
 
         profiler = DataProfiler()
         profile = profiler.profile(df, "test_data")
@@ -62,10 +59,12 @@ class TestDataProfiler:
     @pytest.mark.unit
     def test_profile_to_dataframe(self):
         """Test converting profile to DataFrame."""
-        df = pd.DataFrame({
-            "a": [1, 2, 3],
-            "b": ["x", "y", "z"],
-        })
+        df = pd.DataFrame(
+            {
+                "a": [1, 2, 3],
+                "b": ["x", "y", "z"],
+            }
+        )
 
         profiler = DataProfiler()
         profile = profiler.profile(df, "test")

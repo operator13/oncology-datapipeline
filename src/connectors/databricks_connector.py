@@ -11,10 +11,7 @@ import pandas as pd
 import structlog
 
 from src.connectors.base import BatchConnector
-from src.domain.exceptions import (
-    ConnectionFailedError,
-    QueryExecutionError,
-)
+from src.domain.exceptions import ConnectionFailedError, QueryExecutionError
 from src.utils.config import DatabricksSettings, get_databricks_settings
 
 logger = structlog.get_logger(__name__)
@@ -139,7 +136,9 @@ class DatabricksConnector(BatchConnector):
                 self._cursor.execute(query)
 
             # Get column names from cursor description
-            columns = [desc[0] for desc in self._cursor.description] if self._cursor.description else []
+            columns = (
+                [desc[0] for desc in self._cursor.description] if self._cursor.description else []
+            )
 
             # Fetch all results
             rows = self._cursor.fetchall()
@@ -178,7 +177,9 @@ class DatabricksConnector(BatchConnector):
             else:
                 self._cursor.execute(query)
 
-            columns = [desc[0] for desc in self._cursor.description] if self._cursor.description else []
+            columns = (
+                [desc[0] for desc in self._cursor.description] if self._cursor.description else []
+            )
 
             while True:
                 rows = self._cursor.fetchmany(chunk_size)
@@ -240,9 +241,7 @@ class DatabricksConnector(BatchConnector):
         except Exception:
             return False
 
-    def get_table_schema(
-        self, table_name: str, schema: str | None = None
-    ) -> list[dict[str, Any]]:
+    def get_table_schema(self, table_name: str, schema: str | None = None) -> list[dict[str, Any]]:
         """Get table schema information.
 
         Args:

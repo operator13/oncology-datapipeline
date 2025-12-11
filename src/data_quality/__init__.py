@@ -32,11 +32,7 @@ from src.data_quality.expectation_builder import (
     build_patient_suite,
     build_treatment_suite,
 )
-from src.data_quality.validation_runner import (
-    ValidationConfig,
-    ValidationResult,
-    ValidationRunner,
-)
+from src.data_quality.validation_runner import ValidationConfig, ValidationResult, ValidationRunner
 
 __all__ = [
     # Validation

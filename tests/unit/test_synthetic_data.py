@@ -2,15 +2,16 @@
 Unit tests for synthetic data generators.
 """
 
-import pytest
 from datetime import date
 
+import pytest
+
 from src.synthetic_data import (
-    PatientGenerator,
-    TreatmentGenerator,
-    LabResultsGenerator,
     CancerType,
     Gender,
+    LabResultsGenerator,
+    PatientGenerator,
+    TreatmentGenerator,
     TreatmentType,
 )
 
@@ -100,7 +101,20 @@ class TestPatientGenerator:
     def test_valid_cancer_stages(self, patient_generator):
         """Test that cancer stages are valid."""
         patients = patient_generator.generate(count=100)
-        valid_stages = {"I", "IA", "IB", "II", "IIA", "IIB", "III", "IIIA", "IIIB", "IV", "IVA", "IVB"}
+        valid_stages = {
+            "I",
+            "IA",
+            "IB",
+            "II",
+            "IIA",
+            "IIB",
+            "III",
+            "IIIA",
+            "IIIB",
+            "IV",
+            "IVA",
+            "IVB",
+        }
 
         for patient in patients:
             assert patient.cancer_stage in valid_stages
@@ -110,9 +124,7 @@ class TestTreatmentGenerator:
     """Tests for TreatmentGenerator."""
 
     @pytest.mark.unit
-    def test_generate_treatments_for_patients(
-        self, patient_generator, treatment_generator
-    ):
+    def test_generate_treatments_for_patients(self, patient_generator, treatment_generator):
         """Test generating treatments for patients."""
         patients = patient_generator.generate(count=10)
         treatments = treatment_generator.generate_for_patients(patients, avg_treatments=2)
@@ -122,9 +134,7 @@ class TestTreatmentGenerator:
         assert 10 <= len(treatments) <= 40
 
     @pytest.mark.unit
-    def test_treatment_patient_reference(
-        self, patient_generator, treatment_generator
-    ):
+    def test_treatment_patient_reference(self, patient_generator, treatment_generator):
         """Test that treatments reference valid patient IDs."""
         patients = patient_generator.generate(count=5)
         treatments = treatment_generator.generate_for_patients(patients, avg_treatments=2)
@@ -134,9 +144,7 @@ class TestTreatmentGenerator:
             assert treatment.patient_id in patient_ids
 
     @pytest.mark.unit
-    def test_valid_treatment_types(
-        self, patient_generator, treatment_generator
-    ):
+    def test_valid_treatment_types(self, patient_generator, treatment_generator):
         """Test that treatment types are valid."""
         patients = patient_generator.generate(count=10)
         treatments = treatment_generator.generate_for_patients(patients, avg_treatments=3)
@@ -145,9 +153,7 @@ class TestTreatmentGenerator:
             assert treatment.treatment_type in TreatmentType
 
     @pytest.mark.unit
-    def test_chemotherapy_has_drug_info(
-        self, patient_generator, treatment_generator
-    ):
+    def test_chemotherapy_has_drug_info(self, patient_generator, treatment_generator):
         """Test that chemotherapy treatments have drug information."""
         patients = patient_generator.generate(count=50)
         treatments = treatment_generator.generate_for_patients(patients, avg_treatments=3)
@@ -165,9 +171,7 @@ class TestLabResultsGenerator:
     """Tests for LabResultsGenerator."""
 
     @pytest.mark.unit
-    def test_generate_lab_results(
-        self, patient_generator, lab_results_generator
-    ):
+    def test_generate_lab_results(self, patient_generator, lab_results_generator):
         """Test generating lab results."""
         patients = patient_generator.generate(count=10)
         results = lab_results_generator.generate_for_patients(patients, avg_results=5)
@@ -175,9 +179,7 @@ class TestLabResultsGenerator:
         assert len(results) > 0
 
     @pytest.mark.unit
-    def test_result_datetime_after_collection(
-        self, patient_generator, lab_results_generator
-    ):
+    def test_result_datetime_after_collection(self, patient_generator, lab_results_generator):
         """Test that result datetime is after collection datetime."""
         patients = patient_generator.generate(count=10)
         results = lab_results_generator.generate_for_patients(patients, avg_results=5)
@@ -186,9 +188,7 @@ class TestLabResultsGenerator:
             assert result.result_datetime >= result.collection_datetime
 
     @pytest.mark.unit
-    def test_abnormal_flag_consistency(
-        self, patient_generator, lab_results_generator
-    ):
+    def test_abnormal_flag_consistency(self, patient_generator, lab_results_generator):
         """Test that abnormal flags are consistent with values."""
         patients = patient_generator.generate(count=10)
         results = lab_results_generator.generate_for_patients(patients, avg_results=10)
@@ -199,9 +199,7 @@ class TestLabResultsGenerator:
                 assert result.is_abnormal or result.is_critical
 
     @pytest.mark.unit
-    def test_valid_test_categories(
-        self, patient_generator, lab_results_generator
-    ):
+    def test_valid_test_categories(self, patient_generator, lab_results_generator):
         """Test that test categories are valid."""
         patients = patient_generator.generate(count=10)
         results = lab_results_generator.generate_for_patients(patients, avg_results=10)

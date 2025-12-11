@@ -206,9 +206,7 @@ class AppSettings(BaseSettings):
     # Nested settings
     databricks: DatabricksSettings = Field(default_factory=DatabricksSettings)
     sqlserver: SqlServerSettings = Field(default_factory=SqlServerSettings)
-    great_expectations: GreatExpectationsSettings = Field(
-        default_factory=GreatExpectationsSettings
-    )
+    great_expectations: GreatExpectationsSettings = Field(default_factory=GreatExpectationsSettings)
     logging: LoggingSettings = Field(default_factory=LoggingSettings)
 
     @property

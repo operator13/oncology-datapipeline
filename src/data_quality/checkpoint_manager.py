@@ -151,9 +151,7 @@ class CheckpointManager:
         """Initialize the Great Expectations data context."""
         try:
             if self.ge_root_dir.exists():
-                self._context = FileDataContext(
-                    project_root_dir=str(self.ge_root_dir.parent)
-                )
+                self._context = FileDataContext(project_root_dir=str(self.ge_root_dir.parent))
                 self._logger.info("Loaded GE context for checkpoint management")
             else:
                 self._logger.warning(
@@ -368,13 +366,15 @@ class CheckpointManager:
 
         if hasattr(result, "run_results"):
             for key, run_result in result.run_results.items():
-                validation_results.append({
-                    "success": run_result.success if hasattr(run_result, "success") else True,
-                    "expectation_suite_name": getattr(
-                        run_result, "expectation_suite_name", "unknown"
-                    ),
-                    "statistics": getattr(run_result, "statistics", {}),
-                })
+                validation_results.append(
+                    {
+                        "success": run_result.success if hasattr(run_result, "success") else True,
+                        "expectation_suite_name": getattr(
+                            run_result, "expectation_suite_name", "unknown"
+                        ),
+                        "statistics": getattr(run_result, "statistics", {}),
+                    }
+                )
 
         return CheckpointResult(
             checkpoint_name=name,
@@ -389,10 +389,12 @@ class CheckpointManager:
             checkpoint_name=name,
             success=True,
             run_time=datetime.now(),
-            validation_results=[{
-                "success": True,
-                "note": "Mock result - Great Expectations not installed",
-            }],
+            validation_results=[
+                {
+                    "success": True,
+                    "note": "Mock result - Great Expectations not installed",
+                }
+            ],
         )
 
 
@@ -438,8 +440,10 @@ def run_oncology_validation_pipeline(
     Returns:
         Dictionary of checkpoint results.
     """
-    return manager.run_all_checkpoints({
-        "patient_checkpoint": patients_df,
-        "treatment_checkpoint": treatments_df,
-        "lab_results_checkpoint": lab_results_df,
-    })
+    return manager.run_all_checkpoints(
+        {
+            "patient_checkpoint": patients_df,
+            "treatment_checkpoint": treatments_df,
+            "lab_results_checkpoint": lab_results_df,
+        }
+    )

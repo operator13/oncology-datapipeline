@@ -27,16 +27,8 @@ from src.profiling.anomaly_detector import (
     AnomalyResult,
     detect_lab_value_anomalies,
 )
-from src.profiling.data_profiler import (
-    ColumnProfile,
-    DataProfile,
-    DataProfiler,
-)
-from src.profiling.drift_detector import (
-    DriftDetector,
-    DriftResult,
-    DriftType,
-)
+from src.profiling.data_profiler import ColumnProfile, DataProfile, DataProfiler
+from src.profiling.drift_detector import DriftDetector, DriftResult, DriftType
 
 __all__ = [
     # Profiler

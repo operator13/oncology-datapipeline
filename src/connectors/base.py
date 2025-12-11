@@ -172,9 +172,7 @@ class DataConnector(ABC):
         ...
 
     @abstractmethod
-    def get_table_schema(
-        self, table_name: str, schema: str | None = None
-    ) -> list[dict[str, Any]]:
+    def get_table_schema(self, table_name: str, schema: str | None = None) -> list[dict[str, Any]]:
         """Get the schema (column definitions) for a table.
 
         Args:

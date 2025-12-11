@@ -386,9 +386,21 @@ def build_patient_suite() -> ExpectationBuilder:
     # Required columns
     builder.expect_columns_to_match_set(
         [
-            "patient_id", "mrn", "first_name", "last_name", "date_of_birth",
-            "gender", "race", "ethnicity", "address_line1", "city", "state",
-            "zip_code", "primary_diagnosis_code", "cancer_type", "cancer_stage",
+            "patient_id",
+            "mrn",
+            "first_name",
+            "last_name",
+            "date_of_birth",
+            "gender",
+            "race",
+            "ethnicity",
+            "address_line1",
+            "city",
+            "state",
+            "zip_code",
+            "primary_diagnosis_code",
+            "cancer_type",
+            "cancer_stage",
         ],
         exact_match=False,
     )

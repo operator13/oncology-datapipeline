@@ -398,9 +398,7 @@ def detect_lab_value_anomalies(
     logger.info("Detecting lab value anomalies")
 
     # Check for values outside reference ranges
-    anomaly_mask = (
-        (df[value_column] < df[reference_low]) | (df[value_column] > df[reference_high])
-    )
+    anomaly_mask = (df[value_column] < df[reference_low]) | (df[value_column] > df[reference_high])
 
     anomaly_indices = df.index[anomaly_mask].tolist()
 

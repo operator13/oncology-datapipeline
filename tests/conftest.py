@@ -15,12 +15,11 @@ import pytest
 from src.synthetic_data import (
     CancerType,
     Gender,
+    LabResultsGenerator,
     OncologyDataFactory,
     PatientGenerator,
     TreatmentGenerator,
-    LabResultsGenerator,
 )
-
 
 # =============================================================================
 # Session-scoped fixtures (created once per test session)
@@ -212,32 +211,38 @@ def invalid_patient_data() -> dict:
 @pytest.fixture
 def df_with_nulls() -> pd.DataFrame:
     """DataFrame with null values for completeness testing."""
-    return pd.DataFrame({
-        "id": [1, 2, 3, 4, 5],
-        "name": ["Alice", None, "Charlie", None, "Eve"],
-        "value": [100, 200, None, 400, None],
-        "date": [date(2023, 1, 1), date(2023, 2, 1), None, date(2023, 4, 1), date(2023, 5, 1)],
-    })
+    return pd.DataFrame(
+        {
+            "id": [1, 2, 3, 4, 5],
+            "name": ["Alice", None, "Charlie", None, "Eve"],
+            "value": [100, 200, None, 400, None],
+            "date": [date(2023, 1, 1), date(2023, 2, 1), None, date(2023, 4, 1), date(2023, 5, 1)],
+        }
+    )
 
 
 @pytest.fixture
 def df_with_duplicates() -> pd.DataFrame:
     """DataFrame with duplicate values for uniqueness testing."""
-    return pd.DataFrame({
-        "id": [1, 2, 2, 4, 5],  # Duplicate ID
-        "name": ["Alice", "Bob", "Bob", "Diana", "Eve"],
-        "value": [100, 200, 200, 400, 500],
-    })
+    return pd.DataFrame(
+        {
+            "id": [1, 2, 2, 4, 5],  # Duplicate ID
+            "name": ["Alice", "Bob", "Bob", "Diana", "Eve"],
+            "value": [100, 200, 200, 400, 500],
+        }
+    )
 
 
 @pytest.fixture
 def df_with_outliers() -> pd.DataFrame:
     """DataFrame with outliers for anomaly detection testing."""
-    return pd.DataFrame({
-        "id": range(100),
-        "normal_value": [50 + i % 10 for i in range(100)],
-        "with_outliers": [50 + i % 10 if i < 95 else 1000 for i in range(100)],
-    })
+    return pd.DataFrame(
+        {
+            "id": range(100),
+            "normal_value": [50 + i % 10 for i in range(100)],
+            "with_outliers": [50 + i % 10 if i < 95 else 1000 for i in range(100)],
+        }
+    )
 
 
 # =============================================================================

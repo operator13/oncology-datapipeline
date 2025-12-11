@@ -21,16 +21,8 @@ Example:
     ...     df = conn.execute_query("SELECT TOP 10 * FROM patients")
 """
 
-from src.connectors.base import (
-    BatchConnector,
-    DataConnector,
-    TransactionalConnector,
-)
-from src.connectors.connection_factory import (
-    ConnectionFactory,
-    ConnectorType,
-    get_connector,
-)
+from src.connectors.base import BatchConnector, DataConnector, TransactionalConnector
+from src.connectors.connection_factory import ConnectionFactory, ConnectorType, get_connector
 from src.connectors.databricks_connector import DatabricksConnector
 from src.connectors.sqlserver_connector import SqlServerConnector
 

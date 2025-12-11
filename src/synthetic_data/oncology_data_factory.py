@@ -110,8 +110,12 @@ class GeneratedDataset:
             "avg_treatments_per_patient": self.treatment_count / max(1, self.patient_count),
             "avg_lab_results_per_patient": self.lab_result_count / max(1, self.patient_count),
             "cancer_type_distribution": dfs["patients"]["cancer_type"].value_counts().to_dict(),
-            "treatment_type_distribution": dfs["treatments"]["treatment_type"].value_counts().to_dict(),
-            "abnormal_lab_rate": dfs["lab_results"]["is_abnormal"].mean() if len(dfs["lab_results"]) > 0 else 0,
+            "treatment_type_distribution": dfs["treatments"]["treatment_type"]
+            .value_counts()
+            .to_dict(),
+            "abnormal_lab_rate": (
+                dfs["lab_results"]["is_abnormal"].mean() if len(dfs["lab_results"]) > 0 else 0
+            ),
         }
 
 
@@ -342,6 +346,7 @@ class OncologyDataFactory:
                 elif issue_type == "future_date":
                     # Future diagnosis date
                     from datetime import date, timedelta
+
                     future_date = date.today() + timedelta(days=30)
                     object.__setattr__(patient, "primary_diagnosis_date", future_date)
                 elif issue_type == "invalid_code":
@@ -360,6 +365,7 @@ class OncologyDataFactory:
                 elif issue_type == "end_before_start":
                     # End date before start date
                     from datetime import timedelta
+
                     bad_end = treatment.start_date - timedelta(days=10)
                     object.__setattr__(treatment, "end_date", bad_end)
 
@@ -375,6 +381,7 @@ class OncologyDataFactory:
                 elif issue_type == "result_before_collection":
                     # Result before collection
                     from datetime import timedelta
+
                     bad_result_time = result.collection_datetime - timedelta(hours=5)
                     object.__setattr__(result, "result_datetime", bad_result_time)
 

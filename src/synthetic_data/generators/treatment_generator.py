@@ -98,7 +98,12 @@ class TreatmentGenerator:
 
     # Surgical procedures by cancer type
     SURGICAL_PROCEDURES: dict[CancerType, list[str]] = {
-        CancerType.BREAST: ["Lumpectomy", "Mastectomy", "Sentinel Node Biopsy", "Axillary Dissection"],
+        CancerType.BREAST: [
+            "Lumpectomy",
+            "Mastectomy",
+            "Sentinel Node Biopsy",
+            "Axillary Dissection",
+        ],
         CancerType.LUNG: ["Lobectomy", "Pneumonectomy", "Wedge Resection", "VATS"],
         CancerType.COLORECTAL: ["Colectomy", "LAR", "APR", "Polypectomy"],
         CancerType.PROSTATE: ["Prostatectomy", "TURP", "Robotic Prostatectomy"],
@@ -213,7 +218,11 @@ class TreatmentGenerator:
         # Get treatment distribution for cancer type
         distribution = self.TREATMENT_DISTRIBUTION.get(
             patient.cancer_type,
-            {TreatmentType.CHEMOTHERAPY: 0.4, TreatmentType.RADIATION: 0.3, TreatmentType.SURGERY: 0.3},
+            {
+                TreatmentType.CHEMOTHERAPY: 0.4,
+                TreatmentType.RADIATION: 0.3,
+                TreatmentType.SURGERY: 0.3,
+            },
         )
 
         treatment_types = list(distribution.keys())
@@ -342,12 +351,14 @@ class TreatmentGenerator:
             treatment_name = random.choice(procedures)
 
         elif treatment_type == TreatmentType.IMMUNOTHERAPY:
-            treatment_name = random.choice([
-                "Pembrolizumab",
-                "Nivolumab",
-                "Atezolizumab",
-                "Ipilimumab",
-            ])
+            treatment_name = random.choice(
+                [
+                    "Pembrolizumab",
+                    "Nivolumab",
+                    "Atezolizumab",
+                    "Ipilimumab",
+                ]
+            )
             drug_info = {
                 "ndc": self.faker.numerify("#####-####-##"),
                 "name": treatment_name,
@@ -358,12 +369,14 @@ class TreatmentGenerator:
             cycles_info = {"planned": random.randint(6, 24)}
 
         elif treatment_type == TreatmentType.TARGETED_THERAPY:
-            treatment_name = random.choice([
-                "Trastuzumab",
-                "Bevacizumab",
-                "Cetuximab",
-                "Rituximab",
-            ])
+            treatment_name = random.choice(
+                [
+                    "Trastuzumab",
+                    "Bevacizumab",
+                    "Cetuximab",
+                    "Rituximab",
+                ]
+            )
             drug_info = {
                 "ndc": self.faker.numerify("#####-####-##"),
                 "name": treatment_name,
@@ -374,16 +387,20 @@ class TreatmentGenerator:
             cycles_info = {"planned": random.randint(6, 18)}
 
         elif treatment_type == TreatmentType.HORMONE_THERAPY:
-            treatment_name = random.choice([
-                "Tamoxifen",
-                "Letrozole",
-                "Anastrozole",
-                "Lupron",
-            ])
+            treatment_name = random.choice(
+                [
+                    "Tamoxifen",
+                    "Letrozole",
+                    "Anastrozole",
+                    "Lupron",
+                ]
+            )
             drug_info = {
                 "ndc": self.faker.numerify("#####-####-##"),
                 "name": treatment_name,
-                "route": "PO" if treatment_name in ["Tamoxifen", "Letrozole", "Anastrozole"] else "IM",
+                "route": (
+                    "PO" if treatment_name in ["Tamoxifen", "Letrozole", "Anastrozole"] else "IM"
+                ),
                 "dosage": round(random.uniform(10, 100), 1),
                 "unit": "mg",
             }

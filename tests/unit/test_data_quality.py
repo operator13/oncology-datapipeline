@@ -2,13 +2,13 @@
 Unit tests for data quality module.
 """
 
-import pytest
 import pandas as pd
+import pytest
 
 from src.data_quality import (
     ExpectationBuilder,
-    ValidationRunner,
     ValidationResult,
+    ValidationRunner,
     build_patient_suite,
 )
 
@@ -86,10 +86,7 @@ class TestExpectationBuilder:
         """Test fluent interface chaining."""
         builder = ExpectationBuilder("test_suite")
         result = (
-            builder
-            .expect_not_null("id")
-            .expect_unique("id")
-            .expect_between("value", min_value=0)
+            builder.expect_not_null("id").expect_unique("id").expect_between("value", min_value=0)
         )
 
         assert result is builder
