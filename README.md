@@ -348,7 +348,7 @@ oncology_datapipeline/
 ## Quick Start
 
 ### Prerequisites
-- Python 3.10+
+- Python 3.10, 3.11, or 3.12
 - Access to Databricks workspace (optional)
 - SQL Server instance (optional)
 
@@ -359,14 +359,19 @@ oncology_datapipeline/
 git clone https://github.com/operator13/oncology-datapipeline.git
 cd oncology-datapipeline
 
-# Create virtual environment
-python -m venv venv
+# Create virtual environment (recommended: Python 3.11)
+python3.11 -m venv venv
 source venv/bin/activate  # On Windows: venv\Scripts\activate
 
 # Install dependencies (choose one)
 pip install -r requirements.txt    # Option 1: Using requirements.txt
 pip install -e ".[dev]"            # Option 2: Using pyproject.toml
 ```
+
+> **Important:** Always activate the virtual environment before running commands:
+> ```bash
+> source venv/bin/activate
+> ```
 
 ### Configuration
 
