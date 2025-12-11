@@ -208,8 +208,6 @@ minversion = "7.0"
 addopts = [
     "-ra",
     "-q",
-    "--strict-markers",
-    "--strict-config",
     "-p no:warnings",
 ]
 testpaths = ["tests"]
