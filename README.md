@@ -5,7 +5,6 @@
 [![Great Expectations](https://img.shields.io/badge/Great%20Expectations-0.18+-orange)](https://greatexpectations.io/)
 [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.28+-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 A **production-ready data quality framework** demonstrating enterprise-grade data validation for healthcare oncology data. Built as a portfolio project showcasing expertise in **data engineering**, **data quality**, and **healthcare data validation**.
 
