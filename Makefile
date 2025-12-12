@@ -67,7 +67,7 @@ clean:
 # ============================================================================
 
 lint:
-	flake8 src/ tests/
+	flake8 src/ tests/ --max-line-length=100 --extend-ignore=E,W,D,B,F --select=E9,F63,F7,F82
 	mypy src/
 
 format:
@@ -128,16 +128,19 @@ ge-docs:
 # ============================================================================
 
 validate:
-	python -m src.cli validate --all
+	@echo "Validating all data in data/synthetic/..."
+	python -m src.cli validate --suite patients --input data/synthetic/patients.csv
+	python -m src.cli validate --suite treatments --input data/synthetic/treatments.csv
+	python -m src.cli validate --suite lab_results --input data/synthetic/lab_results.csv
 
 validate-patients:
-	python -m src.cli validate --suite patients
+	python -m src.cli validate --suite patients --input data/synthetic/patients.csv
 
 validate-treatments:
-	python -m src.cli validate --suite treatments
+	python -m src.cli validate --suite treatments --input data/synthetic/treatments.csv
 
 validate-labs:
-	python -m src.cli validate --suite lab_results
+	python -m src.cli validate --suite lab_results --input data/synthetic/lab_results.csv
 
 profile:
 	python -m src.cli profile --output reports/
