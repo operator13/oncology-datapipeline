@@ -216,6 +216,10 @@ class DataProfiler:
         if len(clean) == 0:
             return {}
 
+        # Convert boolean to int to avoid numpy arithmetic errors
+        if pd.api.types.is_bool_dtype(clean):
+            clean = clean.astype(int)
+
         return {
             "mean": float(clean.mean()),
             "std": float(clean.std()),
